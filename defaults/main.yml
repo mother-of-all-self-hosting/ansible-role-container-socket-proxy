@@ -17,7 +17,7 @@ devture_container_socket_proxy_systemd_required_services_list: ['docker.service'
 
 devture_container_socket_proxy_container_image: "{{ devture_container_socket_proxy_container_image_registry_prefix }}tecnativa/docker-socket-proxy:{{ devture_container_socket_proxy_container_image_tag }}"
 devture_container_socket_proxy_container_image_tag: "{{ devture_container_socket_proxy_version }}"
-devture_container_socket_proxy_container_image_force_pull: "{{ etherpad_container_image.endswith(':latest') or etherpad_container_image.endswith(':nightly') }}"
+devture_container_socket_proxy_container_image_force_pull: "{{ devture_container_socket_proxy_container_image_tag.endswith(':latest') or devture_container_socket_proxy_container_image_tag.endswith(':nightly') }}"
 devture_container_socket_proxy_container_image_registry_prefix: ghcr.io/
 
 devture_container_socket_proxy_container_network: "{{ devture_container_socket_proxy_identifier }}"
