@@ -43,13 +43,20 @@
 - name: Ensure container-socket-proxy container network exists via community.docker.docker_network
   when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
   community.docker.docker_network:
+    enable_ipv6: "{{ devture_systemd_docker_base_ipv6_enabled }}"
     name: "{{ devture_container_socket_proxy_container_network }}"
+    driver: bridge
+    driver_options: "{{ devture_systemd_docker_base_container_networks_driver_options }}"
   until: result is not failed
 
-- name: Ensure container-socket-proxy container network exists via command
+- name: Ensure container-socket-proxy container network exists via ansible.builtin.command
   when: devture_systemd_docker_base_container_network_creation_method == 'command'
   ansible.builtin.command:
-    cmd: "{{ devture_systemd_docker_base_host_command_docker }} network create {{ devture_container_socket_proxy_container_network }}"
+    cmd: >-
+      {{ devture_systemd_docker_base_host_command_docker }} network create
+      {% if devture_systemd_docker_base_ipv6_enabled %}--ipv6{% endif %}
+      {{ devture_systemd_docker_base_container_networks_driver_options_string }}
+      {{ devture_container_socket_proxy_container_network }}
   register: network_creation_result
   failed_when: network_creation_result.rc != 0 and 'already exists' not in network_creation_result.stderr
 
