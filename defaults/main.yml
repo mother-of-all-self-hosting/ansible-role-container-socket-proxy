@@ -27,7 +27,9 @@ devture_container_socket_proxy_container_network: "{{ devture_container_socket_p
 
 # A list of additional container networks that the container would be connected to.
 # The role does not create these networks, so make sure they already exist.
-devture_container_socket_proxy_container_additional_networks: []
+devture_container_socket_proxy_container_additional_networks: "{{ devture_container_socket_proxy_container_additional_networks_auto + devture_container_socket_proxy_container_additional_networks_custom }}"
+devture_container_socket_proxy_container_additional_networks_auto: []
+devture_container_socket_proxy_container_additional_networks_custom: []
 
 # A list of extra arguments to pass to the container
 devture_container_socket_proxy_container_extra_arguments: []
