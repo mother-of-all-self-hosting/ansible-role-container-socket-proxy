@@ -6,7 +6,7 @@ devture_container_socket_proxy_enabled: true
 
 devture_container_socket_proxy_identifier: devture-container-socket-proxy
 
-devture_container_socket_proxy_version: 0.2.0
+devture_container_socket_proxy_version: 0.3.0
 
 devture_container_socket_proxy_uid: ''
 devture_container_socket_proxy_gid: ''
