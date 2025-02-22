@@ -62,6 +62,6 @@
 
 - name: Ensure container-socket-proxy systemd service installed
   ansible.builtin.template:
-    src: "{{ role_path }}/templates/devture-container-socket-proxy.service.j2"
+    src: "{{ role_path }}/templates/container-socket-proxy.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ container_socket_proxy_identifier }}.service"
     mode: 0644
