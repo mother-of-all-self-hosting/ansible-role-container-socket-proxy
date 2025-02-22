@@ -4,7 +4,7 @@
 
 container_socket_proxy_enabled: true
 
-container_socket_proxy_identifier: devture-container-socket-proxy
+container_socket_proxy_identifier: container-socket-proxy
 
 container_socket_proxy_version: 0.3.0
 
