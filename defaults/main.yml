@@ -30,6 +30,7 @@ container_socket_proxy_container_image_registry_prefix: "{{ container_socket_pro
 container_socket_proxy_container_image_registry_prefix_upstream: "{{ container_socket_proxy_container_image_registry_prefix_upstream_default }}"
 container_socket_proxy_container_image_registry_prefix_upstream_default: ghcr.io/
 
+# The base container network. It will be auto-created by this role if it doesn't exist already.
 container_socket_proxy_container_network: "{{ container_socket_proxy_identifier }}"
 
 # A list of additional container networks that the container would be connected to.
