@@ -10,6 +10,9 @@ Description=Container Socket Proxy ({{ container_socket_proxy_identifier }})
 Requires={{ service }}
 After={{ service }}
 {% endfor %}
+{% for service in container_socket_proxy_systemd_wanted_services_list %}
+Wants={{ service }}
+{% endfor %}
 DefaultDependencies=no
 
 [Service]

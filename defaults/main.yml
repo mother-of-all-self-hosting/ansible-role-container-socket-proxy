@@ -44,10 +44,14 @@ container_socket_proxy_labels_additional_labels: ''
 # A list of extra arguments to pass to the container
 container_socket_proxy_container_extra_arguments: []
 
+# List of systemd services that the Container Socket Proxy systemd service depends on
 container_socket_proxy_systemd_required_services_list: "{{ container_socket_proxy_systemd_required_services_list_default + container_socket_proxy_systemd_required_services_list_auto + container_socket_proxy_systemd_required_services_list_custom }}"
 container_socket_proxy_systemd_required_services_list_default: "{{ [devture_systemd_docker_base_docker_service_name] if devture_systemd_docker_base_docker_service_name else [] }}"
 container_socket_proxy_systemd_required_services_list_auto: []
 container_socket_proxy_systemd_required_services_list_custom: []
+
+# List of systemd services that the Container Socket Proxy systemd service wants
+container_socket_proxy_systemd_wanted_services_list: []
 
 # Specifies the container socket path on the host
 container_socket_proxy_container_socket_path: /var/run/docker.sock
