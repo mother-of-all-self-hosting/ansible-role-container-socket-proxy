@@ -17,12 +17,12 @@
         state: stopped
         daemon_reload: true
 
-    - name: Ensure container-socket-proxy systemd service doesn't exist
+    - name: Ensure container-socket-proxy systemd service does not exist
       ansible.builtin.file:
         path: "{{ devture_systemd_docker_base_systemd_path }}/{{ container_socket_proxy_identifier }}.service"
         state: absent
 
-    - name: Remove container-socket-proxy directory is removed
+    - name: Ensure container-socket-proxy path does not exist
       ansible.builtin.file:
         path: "{{ container_socket_proxy_base_path }}"
         state: absent
