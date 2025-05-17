@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+-->
+
 # Container Socket Proxy Ansible role
 
 This is an [Ansible](https://www.ansible.com/) role which installs [docker-socket-proxy](https://github.com/Tecnativa/docker-socket-proxy) to run as a [Docker](https://www.docker.com/) container wrapped in a systemd service.

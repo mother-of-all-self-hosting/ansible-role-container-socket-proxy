@@ -1,3 +1,9 @@
+{#
+SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
+
+SPDX-License-Identifier: AGPL-3.0-or-later
+#}
+
 [Unit]
 Description=Container Socket Proxy ({{ container_socket_proxy_identifier }})
 {% for service in container_socket_proxy_systemd_required_services_list %}
