@@ -10,6 +10,7 @@ version = 1
 path = [
     ".config/ansible-lint.yml",
     ".github/workflows/ci.yml",
+    ".github/renovate.json",
     "meta/main.yml",
     ".yamllint"
 ]

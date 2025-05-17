@@ -10,6 +10,7 @@ container_socket_proxy_enabled: true
 
 container_socket_proxy_identifier: container-socket-proxy
 
+# renovate: datasource=docker depName=ghcr.io/tecnativa/docker-socket-proxy versioning=semver
 container_socket_proxy_version: 0.3.0
 
 container_socket_proxy_uid: ''
