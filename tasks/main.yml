@@ -4,11 +4,14 @@
 
 ---
 
-- block:
-    - when: container_socket_proxy_enabled | bool
+- name: Perform container-socket-proxy installation tasks
+  block:
+    - name: Validate container-socket-proxy configuration
+      when: container_socket_proxy_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/validate_config.yml"
 
-    - when: container_socket_proxy_enabled | bool
+    - name: Install container-socket-proxy
+      when: container_socket_proxy_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/install.yml"
   tags:
     - setup-all
@@ -16,8 +19,10 @@
     - install-all
     - install-container-socket-proxy
 
-- block:
-    - when: not container_socket_proxy_enabled | bool
+- name: Perform container-socket-proxy uninstallation tasks
+  block:
+    - name: Uninstall container-socket-proxy
+      when: not container_socket_proxy_enabled | bool
       ansible.builtin.include_tasks: "{{ role_path }}/tasks/uninstall.yml"
   tags:
     - setup-all
