@@ -44,7 +44,7 @@
   delay: "{{ devture_playbook_help_container_retries_delay }}"
   until: result is not failed
 
-- name: Ensure container-socket-proxy container network exists via community.docker.docker_network
+- name: Ensure container-socket-proxy container network is created via community.docker.docker_network
   when: devture_systemd_docker_base_container_network_creation_method == 'ansible-module'
   community.docker.docker_network:
     enable_ipv6: "{{ devture_systemd_docker_base_ipv6_enabled }}"
@@ -53,7 +53,7 @@
     driver_options: "{{ devture_systemd_docker_base_container_networks_driver_options }}"
   until: result is not failed
 
-- name: Ensure container-socket-proxy container network exists via ansible.builtin.command
+- name: Ensure container-socket-proxy container network is created via ansible.builtin.command
   when: devture_systemd_docker_base_container_network_creation_method == 'command'
   ansible.builtin.command:
     cmd: >-
@@ -64,7 +64,7 @@
   register: network_creation_result
   failed_when: network_creation_result.rc != 0 and 'already exists' not in network_creation_result.stderr
 
-- name: Ensure container-socket-proxy systemd service installed
+- name: Ensure container-socket-proxy systemd service are present
   ansible.builtin.template:
     src: "{{ role_path }}/templates/container-socket-proxy.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ container_socket_proxy_identifier }}.service"
