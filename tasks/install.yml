@@ -64,7 +64,7 @@
   register: network_creation_result
   failed_when: network_creation_result.rc != 0 and 'already exists' not in network_creation_result.stderr
 
-- name: Ensure container-socket-proxy systemd service are present
+- name: Ensure container-socket-proxy systemd service is present
   ansible.builtin.template:
     src: "{{ role_path }}/templates/systemd/container-socket-proxy.service.j2"
     dest: "{{ devture_systemd_docker_base_systemd_path }}/{{ container_socket_proxy_identifier }}.service"
