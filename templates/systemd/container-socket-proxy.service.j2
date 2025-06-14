@@ -24,20 +24,20 @@ ExecStartPre=-{{ devture_systemd_docker_base_host_command_sh }} -c '{{ devture_s
 # We cannot use `--read-only` since 0.1.2, because of:
 # > /usr/local/bin/docker-entrypoint.sh: line 18: can't create /usr/local/etc/haproxy/haproxy.cfg: Read-only file system
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} create \
-			--rm \
-			--name={{ container_socket_proxy_identifier }} \
-			--log-driver=none \
-			--cap-drop=ALL \
-			--network={{ container_socket_proxy_container_network }} \
-			--env-file={{ container_socket_proxy_base_path }}/env \
-			--label-file={{ container_socket_proxy_base_path }}/labels \
-			--mount type=bind,src={{ container_socket_proxy_container_socket_path }},dst=/var/run/docker.sock,ro \
-			--tmpfs=/var/lib/haproxy:rw,noexec,nosuid,size=100m \
-			--tmpfs=/run:rw,noexec,nosuid,size=100m \
-			{% if container_socket_proxy_container_extra_arguments | length > 0 %}
-			{{ container_socket_proxy_container_extra_arguments | join(" ") }} \
-			{% endif %}
-			{{ container_socket_proxy_container_image }}
+      --rm \
+      --name={{ container_socket_proxy_identifier }} \
+      --log-driver=none \
+      --cap-drop=ALL \
+      --network={{ container_socket_proxy_container_network }} \
+      --env-file={{ container_socket_proxy_base_path }}/env \
+      --label-file={{ container_socket_proxy_base_path }}/labels \
+      --mount type=bind,src={{ container_socket_proxy_container_socket_path }},dst=/var/run/docker.sock,ro \
+      --tmpfs=/var/lib/haproxy:rw,noexec,nosuid,size=100m \
+      --tmpfs=/run:rw,noexec,nosuid,size=100m \
+      {% if container_socket_proxy_container_extra_arguments | length > 0 %}
+      {{ container_socket_proxy_container_extra_arguments | join(" ") }} \
+      {% endif %}
+      {{ container_socket_proxy_container_image }}
 
 {% for network in container_socket_proxy_container_additional_networks %}
 ExecStartPre={{ devture_systemd_docker_base_host_command_docker }} network connect {{ network }} {{ container_socket_proxy_identifier }}
