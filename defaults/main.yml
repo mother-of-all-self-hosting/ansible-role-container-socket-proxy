@@ -51,7 +51,10 @@ container_socket_proxy_systemd_required_services_list_auto: []
 container_socket_proxy_systemd_required_services_list_custom: []
 
 # List of systemd services that the Container Socket Proxy systemd service wants
-container_socket_proxy_systemd_wanted_services_list: []
+container_socket_proxy_systemd_wanted_services_list: "{{ container_socket_proxy_systemd_wanted_services_list_default + container_socket_proxy_systemd_wanted_services_list_auto + container_socket_proxy_systemd_wanted_services_list_custom }}"
+container_socket_proxy_systemd_wanted_services_list_default: []
+container_socket_proxy_systemd_wanted_services_list_auto: []
+container_socket_proxy_systemd_wanted_services_list_custom: []
 
 # Specifies the container socket path on the host
 container_socket_proxy_container_socket_path: /var/run/docker.sock
