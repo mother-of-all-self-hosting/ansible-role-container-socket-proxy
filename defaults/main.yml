@@ -42,7 +42,9 @@ container_socket_proxy_container_additional_networks_custom: []
 container_socket_proxy_labels_additional_labels: ''
 
 # A list of extra arguments to pass to the container
-container_socket_proxy_container_extra_arguments: []
+container_socket_proxy_container_extra_arguments: "{{ container_socket_proxy_container_extra_arguments_auto + container_socket_proxy_container_extra_arguments_custom }}"
+container_socket_proxy_container_extra_arguments_auto: []
+container_socket_proxy_container_extra_arguments_custom: []
 
 # List of systemd services that the Container Socket Proxy systemd service depends on
 container_socket_proxy_systemd_required_services_list: "{{ container_socket_proxy_systemd_required_services_list_default + container_socket_proxy_systemd_required_services_list_auto + container_socket_proxy_systemd_required_services_list_custom }}"
