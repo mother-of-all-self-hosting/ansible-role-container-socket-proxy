@@ -41,7 +41,7 @@ container_socket_proxy_container_additional_networks_custom: []
 #   another.label="here"
 container_socket_proxy_labels_additional_labels: ''
 
-# A list of extra arguments to pass to the container
+# A list of extra arguments to pass to the container (`docker create` command)
 container_socket_proxy_container_extra_arguments: "{{ container_socket_proxy_container_extra_arguments_auto + container_socket_proxy_container_extra_arguments_custom }}"
 container_socket_proxy_container_extra_arguments_auto: []
 container_socket_proxy_container_extra_arguments_custom: []
