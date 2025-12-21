@@ -13,8 +13,8 @@ container_socket_proxy_base_path: "/{{ container_socket_proxy_identifier }}"
 # renovate: datasource=docker depName=ghcr.io/tecnativa/docker-socket-proxy versioning=semver
 container_socket_proxy_version: v0.4.2
 
-container_socket_proxy_uid: ''
-container_socket_proxy_gid: ''
+container_socket_proxy_uid: ""
+container_socket_proxy_gid: ""
 
 container_socket_proxy_container_image: "{{ container_socket_proxy_container_image_registry_prefix }}tecnativa/docker-socket-proxy:{{ container_socket_proxy_container_image_tag }}"
 container_socket_proxy_container_image_tag: "{{ container_socket_proxy_version }}"
@@ -39,7 +39,7 @@ container_socket_proxy_container_additional_networks_custom: []
 # container_socket_proxy_labels_additional_labels: |
 #   my.label=1
 #   another.label="here"
-container_socket_proxy_labels_additional_labels: ''
+container_socket_proxy_labels_additional_labels: ""
 
 # A list of extra arguments to pass to the container (`docker create` command)
 container_socket_proxy_container_extra_arguments: "{{ container_socket_proxy_container_extra_arguments_auto + container_socket_proxy_container_extra_arguments_custom }}"
@@ -142,4 +142,4 @@ container_socket_proxy_api_volumes_enabled: false
 # container_socket_proxy_environment_variables: |
 #   NETWORKS=1
 #   SESSION=1
-container_socket_proxy_environment_variables: ''
+container_socket_proxy_environment_variables: ""
