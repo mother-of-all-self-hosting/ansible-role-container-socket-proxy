@@ -42,6 +42,18 @@ container_socket_proxy_container_additional_networks_custom: []
 #   another.label="here"
 container_socket_proxy_labels_additional_labels: ""
 
+# container_socket_proxy_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
+# See `../templates/labels.j2` for details.
+# To add your own custom labels, use `container_socket_proxy_container_labels_additional_labels_custom`
+#
+# Example:
+# container_socket_proxy_container_labels_additional_labels_custom: |
+#   - my.label=1
+#   - another.label="here"
+container_socket_proxy_container_labels_additional_labels: "{{ container_socket_proxy_container_labels_additional_labels_auto + container_socket_proxy_container_labels_additional_labels_custom }}"
+container_socket_proxy_container_labels_additional_labels_auto: []
+container_socket_proxy_container_labels_additional_labels_custom: []
+
 # A list of extra arguments to pass to the container (`docker create` command)
 container_socket_proxy_container_extra_arguments: "{{ container_socket_proxy_container_extra_arguments_auto + container_socket_proxy_container_extra_arguments_custom }}"
 container_socket_proxy_container_extra_arguments_auto: []
