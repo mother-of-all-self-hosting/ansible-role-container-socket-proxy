@@ -1,4 +1,5 @@
-# SPDX-FileCopyrightText: 2023 - 2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2023-2025 Slavi Pantaleev
+# SPDX-FileCopyrightText: 2026 Suguru Hirahara
 #
 # SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -136,10 +137,13 @@ container_socket_proxy_api_version_enabled: true
 # Controls the volumes APIs by toggling the `VOLUMES` environment variable.
 container_socket_proxy_api_volumes_enabled: false
 
-# container_socket_proxy_environment_variables holds a string with environment variable to pass to the container.
+# Specify the timezone
+container_socket_proxy_environment_variables_tz: UTC
+
+# container_socket_proxy_environment_variables_additional_variables contains a multiline string with additional environment variables to pass to the container.
 #
 # Example:
-# container_socket_proxy_environment_variables: |
+# container_socket_proxy_environment_variables_additional_variables: |
 #   NETWORKS=1
 #   SESSION=1
-container_socket_proxy_environment_variables: ""
+container_socket_proxy_environment_variables_additional_variables: ""
