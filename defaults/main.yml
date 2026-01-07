@@ -33,15 +33,6 @@ container_socket_proxy_container_additional_networks: "{{ container_socket_proxy
 container_socket_proxy_container_additional_networks_auto: []
 container_socket_proxy_container_additional_networks_custom: []
 
-# container_socket_proxy_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
-# See `../templates/labels.j2` for details.
-#
-# Example:
-# container_socket_proxy_labels_additional_labels: |
-#   my.label=1
-#   another.label="here"
-container_socket_proxy_labels_additional_labels: ""
-
 # container_socket_proxy_container_labels_additional_labels contains a multiline string with additional labels to add to the container label file.
 # See `../templates/labels.j2` for details.
 # To add your own custom labels, use `container_socket_proxy_container_labels_additional_labels_custom`
