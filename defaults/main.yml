@@ -38,7 +38,7 @@ container_socket_proxy_container_additional_networks_custom: []
 # To add your own custom labels, use `container_socket_proxy_container_labels_additional_labels_custom`
 #
 # Example:
-# container_socket_proxy_container_labels_additional_labels_custom: |
+# container_socket_proxy_container_labels_additional_labels_custom:
 #   - my.label=1
 #   - another.label="here"
 container_socket_proxy_container_labels_additional_labels: "{{ container_socket_proxy_container_labels_additional_labels_auto + container_socket_proxy_container_labels_additional_labels_custom }}"
