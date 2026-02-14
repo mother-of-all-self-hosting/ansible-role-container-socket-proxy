@@ -53,7 +53,7 @@
     name: "{{ container_socket_proxy_container_network }}"
     driver: bridge
     driver_options: "{{ devture_systemd_docker_base_container_networks_driver_options }}"
-  until: result is not failed
+  until: container_socket_proxy_network_creation_result is not failed
   register: container_socket_proxy_network_creation_result
 
 - name: Ensure container-socket-proxy container network is created via ansible.builtin.command
