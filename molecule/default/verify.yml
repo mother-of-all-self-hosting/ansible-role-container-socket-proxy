@@ -191,8 +191,6 @@
         container_socket_proxy_reported_version: >-
           {{ (container_socket_proxy_inspect.stdout | from_json | first).Config.Labels['org.opencontainers.image.version'] | default('') }}
 
-    # Compared with any leading `v` normalized away on both sides, so that this
-    # keeps holding if either side ever stops carrying one.
     - name: Assert the running Container Socket Proxy is the version this role installs
       ansible.builtin.assert:
         that: >-
