@@ -196,10 +196,8 @@
         that: >-
           (container_socket_proxy_reported_version | trim | regex_replace('^v', '')) ==
           (container_socket_proxy_defaults.container_socket_proxy_version | regex_replace('^v', ''))
-        fail_msg: >-
-          The container reports version {{ container_socket_proxy_reported_version | trim | default('none') }},
-          but the role asks for {{ container_socket_proxy_defaults.container_socket_proxy_version }}
-        success_msg: "The Container Socket Proxy reports version {{ container_socket_proxy_reported_version | trim }}"
+        fail_msg: "Container Socket Proxy reports {{ container_socket_proxy_reported_version | trim | default('none') }}, expected {{ container_socket_proxy_defaults.container_socket_proxy_version }}"
+        success_msg: "Container Socket Proxy reports {{ container_socket_proxy_reported_version | trim }}"
 
     - name: Show Container Socket Proxy verification summary
       ansible.builtin.debug:
