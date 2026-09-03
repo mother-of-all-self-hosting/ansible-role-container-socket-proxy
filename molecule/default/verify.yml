@@ -199,13 +199,13 @@
         fail_msg: "Container Socket Proxy reports {{ container_socket_proxy_reported_version | trim | default('none') }}, expected {{ container_socket_proxy_defaults.container_socket_proxy_version }}"
         success_msg: "Container Socket Proxy reports {{ container_socket_proxy_reported_version | trim }}"
 
-    - name: Show Container Socket Proxy verification summary
+    - name: Show the Container Socket Proxy verification summary
       ansible.builtin.debug:
         msg:
           - "Container Socket Proxy systemd: {{ container_socket_proxy_service.status.ActiveState }}"
           - "Container Socket Proxy version: {{ container_socket_proxy_reported_version | trim }}"
+          - "Container Socket Proxy allowed GET /version: {{ container_socket_proxy_version_response.status }}"
+          - "Container Socket Proxy allowed GET /containers/json: {{ container_socket_proxy_containers_response.status }}"
+          - "Container Socket Proxy denied GET /info: {{ container_socket_proxy_info_response.status }}"
+          - "Container Socket Proxy denied POST /version: {{ container_socket_proxy_post_response.status }}"
           - "Docker daemon behind the proxy: {{ container_socket_proxy_version_response.json.Version }}"
-          - "Allowed GET /version: {{ container_socket_proxy_version_response.status }}"
-          - "Allowed GET /containers/json: {{ container_socket_proxy_containers_response.status }}"
-          - "Denied GET /info: {{ container_socket_proxy_info_response.status }}"
-          - "Denied POST /version: {{ container_socket_proxy_post_response.status }}"
