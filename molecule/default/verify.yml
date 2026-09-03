@@ -193,7 +193,7 @@
 
     # Compared with any leading `v` normalized away on both sides, so that this
     # keeps holding if either side ever stops carrying one.
-    - name: Assert the running Container Socket Proxy is the version the role asks for
+    - name: Assert the running Container Socket Proxy is the version this role installs
       ansible.builtin.assert:
         that: >-
           (container_socket_proxy_reported_version | trim | regex_replace('^v', '')) ==
