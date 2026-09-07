@@ -61,6 +61,35 @@
       retries: 24
       delay: 5
 
+    # Tying the running proxy to `container_socket_proxy_version` is what makes
+    # this scenario a real test of the version that Renovate bumps: a bump that
+    # produces an unusable image cannot pass here.
+    #
+    # The Docker API cannot be asked for this - what it reports is the daemon
+    # behind the proxy. The image carries its own version as an OCI label
+    # instead, which the container inherits.
+    - name: Inspect the running Container Socket Proxy container
+      ansible.builtin.command:
+        argv:
+          - docker
+          - inspect
+          - "{{ container_socket_proxy_defaults.container_socket_proxy_identifier }}"
+      register: container_socket_proxy_inspect
+      changed_when: false
+
+    - name: Determine the version of the running Container Socket Proxy
+      ansible.builtin.set_fact:
+        container_socket_proxy_reported_version: >-
+          {{ (container_socket_proxy_inspect.stdout | from_json | first).Config.Labels['org.opencontainers.image.version'] | default('') }}
+
+    - name: Assert the running Container Socket Proxy is the version this role installs
+      ansible.builtin.assert:
+        that: >-
+          (container_socket_proxy_reported_version | trim | regex_replace('^v', '')) ==
+          (container_socket_proxy_defaults.container_socket_proxy_version | regex_replace('^v', ''))
+        fail_msg: "Container Socket Proxy reports {{ container_socket_proxy_reported_version | trim | default('none') }}, expected {{ container_socket_proxy_defaults.container_socket_proxy_version }}"
+        success_msg: "Container Socket Proxy reports {{ container_socket_proxy_reported_version | trim }}"
+
     # `ApiVersion` and `MinAPIVersion` are Docker's own, so their presence is
     # what separates a real daemon answer from any body haproxy could produce
     # by itself.
@@ -163,35 +192,6 @@
           POST /version was not refused ({{ container_socket_proxy_post_response.status }}):
           {{ container_socket_proxy_post_response.content | default('no content') }}
         success_msg: "POST /version is refused with 403, as write access is disabled"
-
-    # Tying the running proxy to `container_socket_proxy_version` is what makes
-    # this scenario a real test of the version that Renovate bumps: a bump that
-    # produces an unusable image cannot pass here.
-    #
-    # The Docker API cannot be asked for this - what it reports is the daemon
-    # behind the proxy. The image carries its own version as an OCI label
-    # instead, which the container inherits.
-    - name: Inspect the running Container Socket Proxy container
-      ansible.builtin.command:
-        argv:
-          - docker
-          - inspect
-          - "{{ container_socket_proxy_defaults.container_socket_proxy_identifier }}"
-      register: container_socket_proxy_inspect
-      changed_when: false
-
-    - name: Determine the version of the running Container Socket Proxy
-      ansible.builtin.set_fact:
-        container_socket_proxy_reported_version: >-
-          {{ (container_socket_proxy_inspect.stdout | from_json | first).Config.Labels['org.opencontainers.image.version'] | default('') }}
-
-    - name: Assert the running Container Socket Proxy is the version this role installs
-      ansible.builtin.assert:
-        that: >-
-          (container_socket_proxy_reported_version | trim | regex_replace('^v', '')) ==
-          (container_socket_proxy_defaults.container_socket_proxy_version | regex_replace('^v', ''))
-        fail_msg: "Container Socket Proxy reports {{ container_socket_proxy_reported_version | trim | default('none') }}, expected {{ container_socket_proxy_defaults.container_socket_proxy_version }}"
-        success_msg: "Container Socket Proxy reports {{ container_socket_proxy_reported_version | trim }}"
 
     - name: Show the Container Socket Proxy verification summary
       ansible.builtin.debug:
