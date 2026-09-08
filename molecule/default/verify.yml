@@ -62,8 +62,8 @@
         # would otherwise be mistaken for a working Docker API.
         follow_redirects: none
         return_content: true
-      register: container_socket_proxy_version_response
-      until: container_socket_proxy_version_response.status == 200
+      register: container_socket_proxy_version_reported
+      until: container_socket_proxy_version_reported.status == 200
       retries: 24
       delay: 5
 
@@ -106,16 +106,16 @@
     - name: Assert the Docker API answers through the Container Socket Proxy
       ansible.builtin.assert:
         that:
-          - container_socket_proxy_version_response.json.ApiVersion is defined
-          - container_socket_proxy_version_response.json.MinAPIVersion is defined
-          - container_socket_proxy_version_response.json.Version is defined
+          - container_socket_proxy_version_reported.json.ApiVersion is defined
+          - container_socket_proxy_version_reported.json.MinAPIVersion is defined
+          - container_socket_proxy_version_reported.json.Version is defined
         fail_msg: >-
           GET /version did not come back as a Docker API payload:
-          {{ container_socket_proxy_version_response.content | default('no content') }}
+          {{ container_socket_proxy_version_reported.content | default('no content') }}
         success_msg: >-
           The Docker API answers through the proxy (daemon
-          {{ container_socket_proxy_version_response.json.Version | default('?') }},
-          API {{ container_socket_proxy_version_response.json.ApiVersion | default('?') }})
+          {{ container_socket_proxy_version_reported.json.Version | default('?') }},
+          API {{ container_socket_proxy_version_reported.json.ApiVersion | default('?') }})
 
     # `CONTAINERS` is off in the role's defaults, and the image denies this
     # path when nothing tells it otherwise, so an answer here can only come
@@ -204,8 +204,8 @@
         msg:
           - "Container Socket Proxy systemd: {{ container_socket_proxy_service.status.ActiveState }}"
           - "Container Socket Proxy version: {{ container_socket_proxy_reported_version | trim }}"
-          - "Container Socket Proxy allowed GET /version: {{ container_socket_proxy_version_response.status }}"
+          - "Container Socket Proxy allowed GET /version: {{ container_socket_proxy_version_reported.status }}"
           - "Container Socket Proxy allowed GET /containers/json: {{ container_socket_proxy_containers_response.status }}"
           - "Container Socket Proxy denied GET /info: {{ container_socket_proxy_info_response.status }}"
           - "Container Socket Proxy denied POST /version: {{ container_socket_proxy_post_response.status }}"
-          - "Docker daemon behind the proxy: {{ container_socket_proxy_version_response.json.Version }}"
+          - "Docker daemon behind the proxy: {{ container_socket_proxy_version_reported.json.Version }}"
