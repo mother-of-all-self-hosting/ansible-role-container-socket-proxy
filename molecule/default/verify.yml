@@ -76,10 +76,7 @@
     # instead, which the container inherits.
     - name: Inspect the running Container Socket Proxy container
       ansible.builtin.command:
-        argv:
-          - docker
-          - inspect
-          - "{{ container_socket_proxy_defaults.container_socket_proxy_identifier }}"
+        cmd: docker inspect {{ container_socket_proxy_defaults.container_socket_proxy_identifier }}
       register: container_socket_proxy_inspect
       changed_when: false
 
