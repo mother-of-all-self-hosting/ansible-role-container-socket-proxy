@@ -10,6 +10,8 @@
   become: true
   gather_facts: false
   tasks:
+    - name: Verify that Container Socket Proxy works
+      block:
     # The role is not included in this playbook, so its defaults are not in
     # scope. Reading defaults/main.yml directly ties the version assertion
     # below.
@@ -206,3 +208,19 @@
           - "Container Socket Proxy denied GET /info: {{ container_socket_proxy_info_response.status }}"
           - "Container Socket Proxy denied POST /version: {{ container_socket_proxy_post_response.status }}"
           - "Docker daemon behind the proxy: {{ container_socket_proxy_version_reported.json.Version }}"
+
+      rescue:
+        # Whatever went wrong, the reason is almost always in the systemd service log.
+        - name: Retrieve the Container Socket Proxy systemd service log
+          ansible.builtin.command:
+            cmd: journalctl --no-pager --output=cat --unit=container-socket-proxy.service
+          register: container_socket_proxy_service_log
+          changed_when: false
+
+        - name: Show the Container Socket Proxy systemd service log
+          ansible.builtin.debug:
+            var: container_socket_proxy_service_log.stdout_lines
+
+        - name: Fail because verification did not pass
+          ansible.builtin.fail:
+            msg: "Container Socket Proxy verification failed. The systemd service log is printed above."
