@@ -9,6 +9,11 @@
   hosts: all
   become: true
   gather_facts: false
+
+  vars:
+    container_socket_proxy_verify_units:
+      - container-socket-proxy.service
+
   tasks:
     - name: Verify that Container Socket Proxy works
       block:
@@ -20,13 +25,14 @@
             file: "{{ lookup('env', 'MOLECULE_PROJECT_DIRECTORY') }}/defaults/main.yml"
             name: container_socket_proxy_defaults
 
-        - name: Wait for the Container Socket Proxy systemd service to become active (up to 180s)
+        - name: Wait for the Container Socket Proxy systemd services to become active (up to 180s each)
           ansible.builtin.systemd_service:
-            name: container-socket-proxy.service
-          register: container_socket_proxy_service
-          until: container_socket_proxy_service.status.ActiveState == 'active'
+            name: "{{ item }}"
+          register: container_socket_proxy_services
+          until: container_socket_proxy_services.status.ActiveState == 'active'
           retries: 36
           delay: 5
+          loop: "{{ container_socket_proxy_verify_units }}"
           # So that giving up is reported by the assertion below rather than as a
           # wall of systemd unit properties.
           failed_when: false
@@ -34,17 +40,20 @@
         # `Restart=always` in the systemd unit means that even a container which crashes
         # and gets restarted reads as active here, so this is a precondition rather than
         # a result.
-        - name: Assert the Container Socket Proxy systemd service is active
+        - name: Assert the Container Socket Proxy systemd services are active
           ansible.builtin.assert:
-            that: container_socket_proxy_service.status.ActiveState == 'active'
-            fail_msg: "container-socket-proxy.service is not active ({{ container_socket_proxy_service.status.ActiveState }})"
-            success_msg: "container-socket-proxy.service is active"
+            that: container_socket_proxy_services.results | map(attribute='status.ActiveState') | unique | list == ['active']
+            fail_msg: >-
+              Not every service is active:
+              {{ dict(container_socket_proxy_verify_units | zip(container_socket_proxy_services.results | map(attribute='status.ActiveState'))) }}
+            success_msg: "Every systemd service is active"
 
-        - name: Retrieve the Container Socket Proxy systemd service log for debugging
+        - name: Retrieve the Container Socket Proxy systemd services log for debugging
           when: container_socket_proxy_debug_service_enabled | bool
           ansible.builtin.command:
-            cmd: journalctl --no-pager --output=cat --unit=container-socket-proxy.service
+            cmd: "journalctl --no-pager --output=cat --unit={{ item }}"
           changed_when: false
+          loop: "{{ container_socket_proxy_verify_units }}"
 
         # A systemd unit reaching "active" only means that `docker start` has not
         # exited yet. The whole point of this role is a listener that speaks the
@@ -201,7 +210,7 @@
         - name: Show the Container Socket Proxy verification summary
           ansible.builtin.debug:
             msg:
-              - "Container Socket Proxy systemd: {{ container_socket_proxy_service.status.ActiveState }}"
+              - "Container Socket Proxy systemd: {% for unit, state in container_socket_proxy_verify_units | zip(container_socket_proxy_services.results | map(attribute='status.ActiveState')) %}{{ unit }} ({{ state }}){% if not loop.last %}, {% endif %}{% endfor %}"
               - "Container Socket Proxy version: {{ container_socket_proxy_reported_version | trim }}"
               - "Container Socket Proxy allowed GET /version: {{ container_socket_proxy_version_reported.status }}"
               - "Container Socket Proxy allowed GET /containers/json: {{ container_socket_proxy_containers_response.status }}"
