@@ -47,7 +47,6 @@ provisioner:
         container_socket_proxy_molecule_bind_port: 2375
 
         # Variables for Container Socket Proxy
-        container_socket_proxy_uid: 1000
         container_socket_proxy_gid: 1000
 
         # Off in the role's defaults, and denied by the image's own built-in
